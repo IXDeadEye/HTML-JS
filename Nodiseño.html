@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hola mundo...</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+
+<header>
+    <h1>Taller HTML, CSS, JS</h1>
+</header>
+
+<main id="project-container">
+    <!-- Las tarjetas de proyectos se agregarán aquí -->
+</main>
+
+<div class="new-project">
+    <input type="text" id="new-project-title" placeholder="Título del nuevo proyecto">
+    <button class="add-button" onclick="addProject()">Agregar Proyecto</button>
+</div>
+
+<script>
+    const projects = [
+        { 
+            title: "Tema 1", 
+            description: "Lorem ipsum dolor sit amet. Visita <a href='https://example.com/t1' target='_blank'>aquí</a> para más información."
+        },
+        { 
+            title: "Tema 2", 
+            description: "Nulla ac nisi non nisl sodales. Aprende más <a href='https://example.com/t2' target='_blank'>aquí</a>."
+        },
+        { 
+            title: "Tema 3", 
+            description: "Consectetur adipiscing elit. Descubre más <a href='https://example.com/t3' target='_blank'>aquí</a>."
+        },
+        { 
+            title: "Tema 4", 
+            description: "Vestibulum ante ipsum primis. Consulta <a href='https://example.com/t4' target='_blank'>aquí</a> para detalles."
+        }
+    ];
+
+    function renderProjects() {
+        const container = document.getElementById('project-container');
+        container.innerHTML = ''; // Limpiar el contenedor antes de renderizar
+        projects.forEach((project, index) => {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.innerHTML = `
+                <div class="project-title" contenteditable="true" onblur="updateProjectTitle(${index}, this.innerText)">${project.title}</div>
+                <p>${project.description}</p>
+                <ul class="bullet-points">
+                    <li>Subtema ${index + 1}.1</li>
+                    <li>Subtema ${index + 1}.2</li>
+                    <li>Subtema ${index + 1}.3</li>
+                </ul>
+                <button class="edit-button" onclick="editProject(${index})">Editar</button>
+                <button class="delete-button" onclick="deleteProject(${index})">Eliminar</button>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    function updateProjectTitle(index, newTitle) {
+        projects[index].title = newTitle;
+    }
+
+    function deleteProject(index) {
+        projects.splice(index, 1);
+        renderProjects();
+    }
+
+    function addProject() {
+        const titleInput = document.getElementById('new-project-title');
+        const newTitle = titleInput.value.trim();
+        if (newTitle) {
+            projects.push({ title: newTitle, description: "Nueva descripción. Agrega un enlace <a href='#'>aquí</a>." });
+            titleInput.value = '';
+            renderProjects();
+        } else {
+            alert("Por favor ingresa un título.");
+        }
+    }
+
+    // Renderizar proyectos al cargar la página
+    renderProjects();
+</script>
+
+</body>
+</html>
